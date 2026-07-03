@@ -95,9 +95,9 @@ function setupAudioControl() {
 
 function toggleAudio() {
   if (backgroundMusic.paused) {
-    backgroundMusic.play().catch(() => {
-      console.warn('Audio autoplay blocked. User gesture required.');
-      announcer.textContent = 'Click again to play music';
+    backgroundMusic.play().catch((error) => {
+      console.warn('Audio playback failed:', error);
+      announcer.textContent = 'Audio could not be loaded. Please check your connection.';
     });
   } else {
     backgroundMusic.pause();
@@ -123,6 +123,12 @@ function updateAudioUI() {
 // Listen for audio events
 backgroundMusic.addEventListener('play', updateAudioUI);
 backgroundMusic.addEventListener('pause', updateAudioUI);
+
+// Listen for audio load errors
+backgroundMusic.addEventListener('error', (e) => {
+  console.error('Audio load error:', e);
+  announcer.textContent = 'Audio could not be loaded.';
+});
 
 // ============================================
 // Page Navigation
