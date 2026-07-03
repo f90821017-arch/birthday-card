@@ -1,541 +1,124 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#FAF8F3">
-    <title>For My Angry Bird</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --cream: #FAF8F3;
-            --brown: #6B4423;
-            --rose: #C17A7A;
-            --gold: #D4AF8E;
-            --gray: #E8E6E1;
-            --transition: all 0.6s ease-in-out;
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            :root {
-                --transition: none;
-            }
-        }
-
-        html, body {
-            width: 100%;
-            height: 100%;
-            background: var(--cream);
-            color: var(--brown);
-            font-family: Georgia, serif;
-            overflow: hidden;
-        }
-
-        body {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Audio player */
-        .audio-control {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-            background: rgba(107, 68, 35, 0.1);
-            border: 1px solid var(--brown);
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: var(--transition);
-            backdrop-filter: blur(4px);
-        }
-
-        .audio-control:hover {
-            background: rgba(107, 68, 35, 0.2);
-        }
-
-        .audio-control.playing::after {
-            content: "♫";
-            color: var(--rose);
-            font-size: 24px;
-        }
-
-        .audio-control.muted::after {
-            content: "♪";
-            color: var(--gray);
-            font-size: 20px;
-        }
-
-        /* Main container */
-        .container {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        /* Page wrapper */
-        .page {
-            width: 100%;
-            max-width: 600px;
-            height: auto;
-            max-height: 90vh;
-            background: var(--cream);
-            border: 2px solid var(--brown);
-            padding: 40px 30px;
-            border-radius: 2px;
-            box-shadow: 0 10px 40px rgba(107, 68, 35, 0.15);
-            opacity: 0;
-            transform: translateY(20px);
-            transition: var(--transition);
-            position: relative;
-            overflow-y: auto;
-        }
-
-        .page.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        @media (max-width: 600px) {
-            .page {
-                max-height: 85vh;
-                padding: 30px 20px;
-                margin: 0 10px;
-            }
-        }
-
-        /* Text styling */
-        h1 {
-            font-size: 2.2rem;
-            color: var(--brown);
-            margin-bottom: 20px;
-            font-weight: normal;
-            letter-spacing: 1px;
-            line-height: 1.4;
-        }
-
-        p {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            color: var(--brown);
-            margin-bottom: 16px;
-            font-weight: 400;
-        }
-
-        .accent {
-            color: var(--rose);
-            font-style: italic;
-        }
-
-        .handwritten {
-            font-family: 'Brush Script MT', cursive;
-            font-size: 1.3rem;
-            color: var(--rose);
-            font-weight: normal;
-        }
-
-        /* Divider */
-        .divider {
-            width: 60px;
-            height: 1px;
-            background: var(--gold);
-            margin: 30px 0;
-        }
-
-        /* Navigation */
-        .nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid var(--gray);
-        }
-
-        button {
-            background: none;
-            border: 1px solid var(--brown);
-            color: var(--brown);
-            padding: 10px 20px;
-            font-family: Georgia, serif;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: var(--transition);
-            border-radius: 2px;
-        }
-
-        button:hover {
-            background: var(--rose);
-            color: var(--cream);
-            border-color: var(--rose);
-        }
-
-        button:active {
-            transform: scale(0.98);
-        }
-
-        button:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-        }
-
-        .page-counter {
-            color: var(--gold);
-            font-size: 0.9rem;
-            letter-spacing: 2px;
-        }
-
-        /* Hidden pages by default */
-        .page {
-            display: none;
-        }
-
-        .page.active {
-            display: block;
-        }
-
-        /* Responsive text */
-        @media (max-width: 480px) {
-            h1 {
-                font-size: 1.8rem;
-            }
-            p {
-                font-size: 1rem;
-            }
-            .page {
-                padding: 25px 18px;
-            }
-        }
-
-        /* Focus styles for keyboard nav */
-        button:focus {
-            outline: 2px solid var(--rose);
-            outline-offset: 2px;
-        }
-
-        .audio-control:focus {
-            outline: 2px solid var(--rose);
-            outline-offset: 2px;
-        }
-    </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#FAF8F3" />
+    <title>For My Angry Bird — A Love Letter</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/styles.css">
 </head>
 <body>
-    <audio id="background-music" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-    </audio>
+    <!-- Background heart layer (parallax) -->
+    <div class="hearts-back" aria-hidden="true"></div>
 
-    <div class="audio-control" id="audio-toggle" tabindex="0" role="button" aria-label="Toggle music">
-    </div>
+    <main class="container" id="main" role="main">
+        <audio id="background-music" loop preload="auto">
+            <source src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Keys_of_Moon/One_Love/Keys_of_Moon_-_One_Love.mp3" type="audio/mpeg">
+            <!-- Bundled alternative will be assets/audio/one-love-slow.mp3 when available -->
+        </audio>
 
-    <div class="container">
-        <!-- Scene 1: The Angry Bird Emerges -->
-        <div class="page active">
-            <h1>The Angry Bird Emerges</h1>
-            <div class="divider"></div>
-            <p>
-                I remember the first time I really saw you. Not just looked—<span class="accent">saw</span>. 
-            </p>
-            <p>
-                There was this intensity in everything you did. The way you got mad about the smallest things. The way you needed attention like oxygen. The way your energy filled a whole room and made everyone feel something.
-            </p>
-            <p>
-                Most people would call it dramatic. I called it <span class="accent">you</span>.
-            </p>
-            <p>
-                And I was gone.
-            </p>
-            <div class="nav">
-                <button id="prev-1" disabled>← Back</button>
-                <span class="page-counter">1 of 7</span>
-                <button id="next-1">Next →</button>
-            </div>
+        <div class="audio-control" id="audio-toggle" tabindex="0" role="button" aria-label="Toggle music">
+            <svg id="audio-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M5 9v6h4l5 4V5L9 9H5z" fill="currentColor"></path>
+                <path id="audio-wave" d="M16.5 8.5c.7 1 1.5 3 0 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
         </div>
 
-        <!-- Scene 2: Ok Ooo -->
-        <div class="page">
-            <h1>Ok Ooo</h1>
-            <div class="divider"></div>
-            <p>
-                You say it all the time. <span class="handwritten">Ok ooo.</span>
-            </p>
-            <p>
-                When you're pretending to agree but you're not really. When you're done with something but also not done. When you're getting mad but also kind of finding it funny. When you're saying yes but meaning maybe.
-            </p>
-            <p>
-                It's your whole language in two syllables.
-            </p>
-            <p>
-                And I've learned to hear what you're really saying underneath. I've learned your codes. I've learned <span class="accent">you</span>.
-            </p>
-            <p>
-                <span class="handwritten">Ok ooo</span> means I love you in a way only we understand.
-            </p>
-            <div class="nav">
-                <button id="prev-2">← Back</button>
-                <span class="page-counter">2 of 7</span>
-                <button id="next-2">Next →</button>
-            </div>
+        <div class="card page-layer">
+            <!-- Keep original content but structured into .page sections -->
+
+            <section class="page active" id="page-1" role="region" aria-labelledby="heading-1">
+                <h1 id="heading-1">The Angry Bird Emerges</h1>
+                <div class="divider"></div>
+                <p>I remember the first time I really saw you. Not just looked—<span class="accent">saw</span>.</p>
+                <p>There was this intensity in everything you did. The way you got mad about the smallest things. The way you needed attention like oxygen. The way your energy filled a whole room and I was gone.</p>
+                <div class="nav">
+                    <button class="prev" id="prev-1" disabled aria-label="Previous page">← Back</button>
+                    <span class="page-counter" aria-live="polite">1 of 7</span>
+                    <button class="next" id="next-1" aria-label="Next page">Next →</button>
+                </div>
+            </section>
+
+            <section class="page" id="page-2" role="region" aria-labelledby="heading-2">
+                <h1 id="heading-2">Ok Ooo</h1>
+                <div class="divider"></div>
+                <p>You say it all the time. <span class="handwritten">Ok ooo.</span></p>
+                <p>When you're pretending to agree but you're not really. When you're done with something but also not done. When you're getting mad but also kind of finding it funny.</p>
+                <div class="nav">
+                    <button class="prev" id="prev-2" aria-label="Previous page">← Back</button>
+                    <span class="page-counter">2 of 7</span>
+                    <button class="next" id="next-2" aria-label="Next page">Next →</button>
+                </div>
+            </section>
+
+            <section class="page" id="page-3" role="region" aria-labelledby="heading-3">
+                <h1 id="heading-3">The Mad About Everything Era</h1>
+                <div class="divider"></div>
+                <p>You get mad at everything. I'm not exaggerating—<span class="accent">everything</span>.</p>
+                <p>And the thing is: I love it. Because underneath all that anger is someone who <span class="accent">cares deeply</span>.</p>
+                <div class="nav">
+                    <button class="prev" id="prev-3" aria-label="Previous page">← Back</button>
+                    <span class="page-counter">3 of 7</span>
+                    <button class="next" id="next-3" aria-label="Next page">Next →</button>
+                </div>
+            </section>
+
+            <section class="page" id="page-4" role="region" aria-labelledby="heading-4">
+                <h1 id="heading-4">Attention Required</h1>
+                <div class="divider"></div>
+                <p>You need attention. Constant, specific, undivided attention.</p>
+                <p>And here's the thing: <span class="accent">you do matter more</span>. You always have.</p>
+                <div class="nav">
+                    <button class="prev" id="prev-4" aria-label="Previous page">← Back</button>
+                    <span class="page-counter">4 of 7</span>
+                    <button class="next" id="next-4" aria-label="Next page">Next →</button>
+                </div>
+            </section>
+
+            <section class="page" id="page-5" role="region" aria-labelledby="heading-5">
+                <h1 id="heading-5">Why You Matter</h1>
+                <div class="divider"></div>
+                <p>Your positive energy isn't just a vibe. It's a <span class="accent">force</span>.</p>
+                <p>You've changed me. And I'm grateful for every <span class="handwritten">Ok ooo</span>, every moment of drama, every time you demanded I show up more fully.</p>
+                <div class="nav">
+                    <button class="prev" id="prev-5" aria-label="Previous page">← Back</button>
+                    <span class="page-counter">5 of 7</span>
+                    <button class="next" id="next-5" aria-label="Next page">Next →</button>
+                </div>
+            </section>
+
+            <section class="page" id="page-6" role="region" aria-labelledby="heading-6">
+                <h1 id="heading-6">To My Angry Bird</h1>
+                <div class="divider"></div>
+                <p>I love you. Not in a quiet way. Not in a convenient way. Not in a way that fits neatly into words.</p>
+                <p>I love you <span class="accent">as you are</span>—intense, demanding, dramatic, full of contradictions and fire and light.</p>
+                <div class="nav">
+                    <button class="prev" id="prev-6" aria-label="Previous page">← Back</button>
+                    <span class="page-counter">6 of 7</span>
+                    <button class="next" id="next-6" aria-label="Next page">Next →</button>
+                </div>
+            </section>
+
+            <section class="page" id="page-7" role="region" aria-labelledby="heading-7">
+                <h1 id="heading-7" style="text-align:center;">Happy Birthday</h1>
+                <div class="divider" style="margin-left:auto;margin-right:auto;"></div>
+                <p style="text-align:center; font-size:1.1rem; margin-top:1.5rem;"><span class="accent">My Angry Bird,</span></p>
+                <p style="text-align:center; margin-top:1.3rem; line-height:1.8;">Thank you for being exactly who you are.</p>
+                <p style="text-align:center; margin-top:1.3rem; color:var(--rose);">I love you.</p>
+                <p style="text-align:center; margin-top:1.3rem; font-size:0.95rem; color:var(--gold);">— Olamide</p>
+                <div class="nav" style="justify-content:center; margin-top:2.5rem;">
+                    <button class="prev" id="prev-7" aria-label="Previous page">← Back</button>
+                </div>
+            </section>
+
         </div>
 
-        <!-- Scene 3: The Mad About Everything Era -->
-        <div class="page">
-            <h1>The Mad About Everything Era</h1>
-            <div class="divider"></div>
-            <p>
-                You get mad at everything. I'm not exaggerating—<span class="accent">everything</span>.
-            </p>
-            <p>
-                You get mad when I don't text back fast enough. You get mad when I do something without asking you first. You get mad at the weather, at traffic, at your phone, at the way I'm looking at you right now.
-            </p>
-            <p>
-                And the thing is: I love it. Because underneath all that anger is someone who <span class="accent">cares deeply</span>. Someone who doesn't do half measures. Someone who feels everything at full volume.
-            </p>
-            <p>
-                Your anger isn't a bug. It's a feature. It's proof that you're alive, that you're present, that you're real.
-            </p>
-            <p>
-                You're my angry bird, and I wouldn't change a single feather.
-            </p>
-            <div class="nav">
-                <button id="prev-3">← Back</button>
-                <span class="page-counter">3 of 7</span>
-                <button id="next-3">Next →</button>
-            </div>
-        </div>
+    </main>
 
-        <!-- Scene 4: Attention Required -->
-        <div class="page">
-            <h1>Attention Required</h1>
-            <div class="divider"></div>
-            <p>
-                You need attention. Constant, specific, undivided attention.
-            </p>
-            <p>
-                You need me to notice when you're upset. You need me to ask you about your day. You need me to check on you, to respond to your messages, to make you feel like you matter more than whatever else is happening.
-            </p>
-            <p>
-                And here's the thing: <span class="accent">you do matter more</span>. You always have.
-            </p>
-            <p>
-                I don't give you my attention because I have to. I give it to you because you're the most interesting person in my world. Because your thoughts are worth hearing. Because the way your mind works fascinates me.
-            </p>
-            <p>
-                You don't need fixing. You need <span class="accent">witnessing</span>. And I'm here for that.
-            </p>
-            <div class="nav">
-                <button id="prev-4">← Back</button>
-                <span class="page-counter">4 of 7</span>
-                <button id="next-4">Next →</button>
-            </div>
-        </div>
+    <div id="announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
 
-        <!-- Scene 5: Why She Matters -->
-        <div class="page">
-            <h1>Why You Matter</h1>
-            <div class="divider"></div>
-            <p>
-                Your positive energy isn't just a vibe. It's a <span class="accent">force</span>.
-            </p>
-            <p>
-                You walk into a room and something shifts. People feel it. I feel it. The world feels a little brighter because you're in it, even when you're mad about something, even when you're demanding attention, even when you're being difficult.
-            </p>
-            <p>
-                You make me want to be better. Not because I'm trying to impress you—though I am. But because being around someone who feels things this deeply, who cares this much, who refuses to settle for ordinary or half-hearted—it changes you.
-            </p>
-            <p>
-                You've changed me.
-            </p>
-            <p>
-                And I'm grateful for every <span class="handwritten">Ok ooo</span>, every moment of drama, every time you demanded I show up more fully.
-            </p>
-            <div class="nav">
-                <button id="prev-5">← Back</button>
-                <span class="page-counter">5 of 7</span>
-                <button id="next-5">Next →</button>
-            </div>
-        </div>
-
-        <!-- Scene 6: The Real Thing -->
-        <div class="page">
-            <h1>To My Angry Bird</h1>
-            <div class="divider"></div>
-            <p>
-                I love you. Not in a quiet way. Not in a convenient way. Not in a way that fits neatly into words.
-            </p>
-            <p>
-                I love you <span class="accent">as you are</span>—intense, demanding, dramatic, full of contradictions and fire and light.
-            </p>
-            <p>
-                I love the way you love. I love how you feel. I love that you won't let me half-ass anything, including being with you.
-            </p>
-            <p>
-                On your birthday, I want you to know: you are not too much. Your anger isn't a problem to solve. Your need for attention isn't neediness—it's you knowing what you deserve.
-            </p>
-            <p>
-                You deserve someone who shows up. Someone who sees you. Someone who loves the angry bird as much as the joyful one.
-            </p>
-            <p>
-                That's me. That's always been me.
-            </p>
-            <div class="nav">
-                <button id="prev-6">← Back</button>
-                <span class="page-counter">6 of 7</span>
-                <button id="next-6">Next →</button>
-            </div>
-        </div>
-
-        <!-- Scene 7: The Final Page -->
-        <div class="page">
-            <h1 style="text-align: center; margin-bottom: 40px;">Happy Birthday</h1>
-            <div class="divider" style="margin-left: auto; margin-right: auto;"></div>
-            <p style="text-align: center; font-size: 1.3rem; margin-top: 40px;">
-                <span class="accent">My Angry Bird,</span>
-            </p>
-            <p style="text-align: center; margin-top: 30px; line-height: 2;">
-                Thank you for being exactly who you are.
-            </p>
-            <p style="text-align: center; margin-top: 30px; color: var(--rose);">
-                I love you.
-            </p>
-            <p style="text-align: center; margin-top: 30px; font-size: 0.95rem; color: var(--gold);">
-                — Olamide
-            </p>
-            <div class="nav" style="justify-content: center; margin-top: 50px;">
-                <button id="prev-7">← Back</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Audio setup
-        const audio = document.getElementById('background-music');
-        const audioToggle = document.getElementById('audio-toggle');
-        let isPlaying = false;
-
-        // Try to autoplay on mute (respects browser policy)
-        audio.muted = true;
-        audio.play().then(() => {
-            isPlaying = true;
-            updateAudioUI();
-        }).catch(() => {
-            // Autoplay failed, wait for user interaction
-        });
-
-        audioToggle.addEventListener('click', toggleAudio);
-        audioToggle.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                toggleAudio();
-            }
-        });
-
-        function toggleAudio() {
-            if (isPlaying) {
-                audio.pause();
-                isPlaying = false;
-            } else {
-                audio.muted = false;
-                audio.play();
-                isPlaying = true;
-            }
-            updateAudioUI();
-        }
-
-        function updateAudioUI() {
-            if (isPlaying && !audio.muted) {
-                audioToggle.classList.remove('muted');
-                audioToggle.classList.add('playing');
-                audioToggle.setAttribute('aria-label', 'Music playing - Click to mute');
-            } else {
-                audioToggle.classList.remove('playing');
-                audioToggle.classList.add('muted');
-                audioToggle.setAttribute('aria-label', 'Music muted - Click to play');
-            }
-        }
-
-        updateAudioUI();
-
-        // Page navigation
-        let currentPage = 0;
-        const pages = document.querySelectorAll('.page');
-        const totalPages = pages.length;
-
-        function showPage(pageNum) {
-            pages.forEach(page => page.classList.remove('active'));
-            pages[pageNum].classList.add('active');
-            
-            // Scroll to top of page
-            document.querySelector('.page.active').scrollTop = 0;
-        }
-
-        function setupNavigation() {
-            for (let i = 0; i < totalPages; i++) {
-                const nextBtn = document.getElementById(`next-${i + 1}`);
-                const prevBtn = document.getElementById(`prev-${i + 1}`);
-
-                if (nextBtn) {
-                    nextBtn.addEventListener('click', () => {
-                        if (currentPage < totalPages - 1) {
-                            currentPage++;
-                            showPage(currentPage);
-                        }
-                    });
-
-                    nextBtn.addEventListener('keydown', (e) => {
-                        if (e.key === 'Enter') {
-                            nextBtn.click();
-                        }
-                    });
-                }
-
-                if (prevBtn) {
-                    prevBtn.addEventListener('click', () => {
-                        if (currentPage > 0) {
-                            currentPage--;
-                            showPage(currentPage);
-                        }
-                    });
-
-                    prevBtn.addEventListener('keydown', (e) => {
-                        if (e.key === 'Enter') {
-                            prevBtn.click();
-                        }
-                    });
-                }
-            }
-        }
-
-        // Keyboard navigation
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight' || e.key === ' ') {
-                if (currentPage < totalPages - 1) {
-                    currentPage++;
-                    showPage(currentPage);
-                }
-            } else if (e.key === 'ArrowLeft') {
-                if (currentPage > 0) {
-                    currentPage--;
-                    showPage(currentPage);
-                }
-            }
-        });
-
-        setupNavigation();
-        showPage(0);
-    </script>
+    <script src="assets/script.js" defer></script>
 </body>
 </html>
